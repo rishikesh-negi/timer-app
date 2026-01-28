@@ -1,12 +1,15 @@
-import Button from "./ui/Button";
-import Container from "./ui/Container";
+import AddTimer from "./components/AddTimer";
+import Header from "./components/Header";
+import Timers from "./components/Timers";
 
 export default function App() {
   return (
-    <main>
-      <Container asElement={"section"}>
-        <Button>Hello</Button>
-      </Container>
-    </main>
+    <>
+      <Header />
+      <main>
+        <AddTimer />
+        <Timers />
+      </main>
+    </>
   );
 }
