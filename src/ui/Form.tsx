@@ -15,7 +15,7 @@ type FormProps = ComponentPropsWithoutRef<"form"> & {
 };
 
 const Form = forwardRef<FormApi, FormProps>(function (
-  { children, onSave },
+  { children, id, onSave },
   ref,
 ) {
   const formElementRef = useRef<HTMLFormElement>(null);
@@ -32,7 +32,7 @@ const Form = forwardRef<FormApi, FormProps>(function (
   }
 
   return (
-    <form ref={formElementRef} onSubmit={handleSubmit}>
+    <form ref={formElementRef} onSubmit={handleSubmit} id={id}>
       {children}
     </form>
   );
