@@ -8,7 +8,7 @@ const Timers: FC = function () {
   return (
     <ul>
       {timers.map((timer) => (
-        <li key={`${timer.name}${timer.duration}${Math.random()}`}>
+        <li key={`${timer.name}${timer.duration}`}>
           <Timer name={timer.name} duration={timer.duration} />
         </li>
       ))}
