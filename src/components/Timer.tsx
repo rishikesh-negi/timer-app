@@ -1,19 +1,35 @@
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import Container from "../ui/Container";
-import type { Timer as TimerProps } from "../store/timers-context";
+import {
+  useTimersContext,
+  type Timer as TimerProps,
+} from "../store/timers-context";
 
 const Timer: FC<TimerProps> = function ({ name, duration }) {
-  const [remainingTime, setRermainingTime] = useState(duration * 1000);
+  const [remainingTime, setRemainingTime] = useState(duration * 1000);
+  const { isRunning } = useTimersContext();
+  const interval = useRef<number | null>(null);
 
-  useEffect(function () {
-    const timerInterval = setInterval(function () {
-      setRermainingTime((currTime) => (currTime > 0 ? currTime - 50 : 0));
-    }, 50);
+  useEffect(() => {
+    if (interval?.current && remainingTime <= 0)
+      clearInterval(interval.current);
+  }, [remainingTime]);
+
+  useEffect(() => {
+    if (isRunning && remainingTime > 0) {
+      interval.current = setInterval(function () {
+        setRemainingTime((currTime) => Math.max(currTime - 50, 0));
+      }, 50);
+    }
+
+    if (interval.current && !isRunning) clearInterval(interval.current);
 
     return () => {
-      if (remainingTime === 0) clearInterval(timerInterval);
+      if (interval.current) {
+        clearInterval(interval.current);
+      }
     };
-  }, []);
+  }, [isRunning, remainingTime, duration]);
 
   const formattedRemainingTime = (remainingTime / 1000).toFixed(2);
 
